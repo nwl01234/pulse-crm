@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Company CRM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .kanban-card {
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+        .kanban-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm sticky top-0 z-50 py-3 px-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-bold text-gray-900">Company CRM</h1>
+            <nav class="flex gap-4 text-sm">
+                <a href="#" class="hover:text-blue-600">Dashboard</a>
+                <a href="#requests" class="hover:text-blue-600">Requests</a>
+                <a href="#stats" class="hover:text-blue-600">Statistics</a>
+                <a href="#ai-chat" class="text-blue-600 font-medium">AI Chat</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="p-4 md:p-8 max-w-7xl mx-auto w-full">
+        <section id="dashboard" x-show="true" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Dashboard</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div x-for="(stat, index) in dashboard_stats" :key="index" class="bg-white rounded-lg shadow-sm p-5 text-center border">
+                    <p class="text-gray-500 text-sm font-medium capitalize">{{ stat.label }}</p>
+                    <p class="text-3xl font-bold text-blue-600 mt-1">{{ stat.value }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-5 border">
+                <h3 class="text-xl font-semibold mb-4">Recent Requests (Last 7 Days)</h3>
+                <div x-for="(req, index) in recent_requests" :key="index" class="mb-2">
+                    <div class="bg-gray-50 rounded-lg p-3 border flex items-center gap-3">
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ req.priority }}</span>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-medium text-sm truncate">{{ req.title }}</h4>
+                            <p class="text-sm text-gray-500 truncate">{{ req.description | truncate(40) }}...</p>
+                        </div>
+                        <span x-bind-statusBadge(req.status)" :class="getStatusClasses(req.status)"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+                <button @click="openModal('newRequest')" class="bg-blue-50 border-l-4 border-blue-500 hover:bg-blue-100 transition-colors p-4 rounded text-left">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 14.364l-2.828-2.828M21 10l-6-6m2.5 6.5a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                    <h3 class="font-semibold">New Request</h3>
+                </button>
+
+                <button @click="openModal('tasks')" class="bg-green-50 border-l-4 border-green-500 hover:bg-green-100 transition-colors p-4 rounded text-left">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9.663 17 12 15 12 3m-6 0l-4 4m6 8h4a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H6a2 2 0 0 1-2 2v8a2 2 0 0 1 2 2z"/></svg></div>
+                    <h3 class="font-semibold">Create Task</h3>
+                </button>
+
+                <button @click="openModal('aiChat')" class="bg-purple-50 border-l-4 border-purple-500 hover:bg-purple-100 transition-colors p-4 rounded text-left">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.5 6.5l.707.707M15.828 9.5a2 2 0 010 2.828M21 12l-6-6m2.5 6.5a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                    <h3 class="font-semibold">AI Assistant</h3>
+                </button>
+            </div>
+        </section>
+
+        <section id="requests" x-show="true" class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Kanban Board</h2>
+                <input type="text" x-model="searchTerm" @input="filterRequests()" placeholder="Search requests..." class="border rounded px-3 py-1.5 pl-8 focus:outline-none focus:border-blue-400">
+                <button @click="clearFilter()" class="px-3 py-1.5 text-sm hover:bg-gray-200 rounded">Clear</button>
+            </div>
+
+            <div x-show="showKanban" class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+                <div x-for="(column, index) in kanban_columns" :key="index" class="min-w-[200px] flex-1 p-6 bg-white rounded-lg shadow-sm border">
+                    <header class="flex items-center just

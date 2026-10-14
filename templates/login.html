@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Por2 CRM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white w-full max-w-md rounded-xl shadow-lg p-8 border border-gray-100">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Por2 CRM</h1>
+            <p class="text-gray-500 text-sm mt-1">Введите данные для входа</p>
+        </div>
+
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input id="email" type="email" required placeholder="admin@company.com"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
+                <input id="password" type="password" required placeholder="••••••••••"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div id="errorMsg" class="hidden text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-2"></div>
+            <button id="loginBtn" type="submit" disabled
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition-colors">
+                Войти
+            </button>
+        </form>
+
+        <p class="text-center mt-6 text-xs text-gray-500">
+            По умолчанию: <span class="text-gray-700 font-medium">admin@company.com</span> / <span class="text-gray-700 font-medium">admin123</span>
+        </p>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorMsg = document.getElementById('errorMsg');
+        const btn = document.getElementById('loginBtn');
+
+        // Prefill default credentials
+        emailInput.value = 'admin@company.com';
+
+        async function login() {
+            btn.disabled = true;
+            errorMsg.classList.add('hidden');
+            try {
+                const res = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput.value.trim(), password: passwordInput.value })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok) {
+                    localStorage.setItem('crm_user', JSON.stringify({
+                        username: data.username,
+                        access_token: data.access_token || null
+                    }));
+                    window.location.replace('/');
+                } else {
+                    throw new Error(data.detail || 'Ошибка входа');
+                }
+            } catch (e) {
+                errorMsg.textContent = e.message || 'Не удалось войти';
+                errorMsg.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        form.addEventListener('submit', e => { e.preventDefault(); login(); });
+    </script>
+</body>
+</html>

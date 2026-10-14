@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a1030"/><stop offset="1" stop-color="#3b1263"/>
+    </linearGradient>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#f472b6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" fill="url(#bg)"/>
+  <circle cx="1060" cy="70" r="180" fill="#a78bfa" opacity="0.12"/>
+  <circle cx="140" cy="370" r="210" fill="#f472b6" opacity="0.08"/>
+  <polyline points="880,240 930,180 980,210 1030,120 1080,160 1130,90" fill="none" stroke="url(#acc)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1130" cy="90" r="7" fill="#f472b6"/>
+  <text x="70" y="140" fill="#f3e8ff" font-family="Segoe UI, sans-serif" font-size="64" font-weight="700">Pulse CRM</text>
+  <text x="72" y="185" fill="url(#acc)" font-family="Segoe UI, sans-serif" font-size="26" font-weight="600">React + TypeScript · FastAPI async · Alembic · Telegram</text>
+  <g font-family="Segoe UI, sans-serif" font-size="20" fill="#ede9fe">
+    <rect x="70" y="240" width="120" height="44" rx="22" fill="#2e1065" stroke="#a78bfa"/><text x="130" y="268" text-anchor="middle">React</text>
+    <rect x="200" y="240" width="120" height="44" rx="22" fill="#2e1065" stroke="#a78bfa"/><text x="260" y="268" text-anchor="middle">TypeScript</text>
+    <rect x="330" y="240" width="110" height="44" rx="22" fill="#2e1065" stroke="#a78bfa"/><text x="385" y="268" text-anchor="middle">Vite</text>
+    <rect x="450" y="240" width="120" height="44" rx="22" fill="#2e1065" stroke="#a78bfa"/><text x="510" y="268" text-anchor="middle">FastAPI</text>
+    <rect x="580" y="240" width="110" height="44" rx="22" fill="#2e1065" stroke="#a78bfa"/><text x="635" y="268" text-anchor="middle">Alembic</text>
+    <rect x="700" y="240" width="110" height="44" rx="22" fill="#2e1065" stroke="#a78bfa"/><text x="755" y="268" text-anchor="middle">aiogram 3</text>
+  </g>
+  <text x="70" y="340" fill="#ddd6fe" font-family="Segoe UI, sans-serif" font-size="18">Заявки, задачи, дашборд статистики, AI-сводки и bulk-операции для менеджеров</text>
+</svg>
