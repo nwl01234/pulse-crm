@@ -70,5 +70,13 @@ npm run build                     # tsc && vite build
 | Telegram | aiogram 3.x |
 | Quality | pytest, black, isort, mypy (в dev-зависимостях) |
 
+## Скриншоты
+
+| | |
+|---|---|
+| ![Дашборд](.assets/screens/01.png) | ![Заявки](.assets/screens/02.png) |
+| ![Статистика](.assets/screens/03.png) | ![AI-сводки](.assets/screens/04.png) |
+| ![Telegram](.assets/screens/05.png) | ![Карточка заявки](.assets/screens/06.png) |
+
 ---
 Часть портфолио: [mini-crm](https://github.com/nwl01234/mini-crm) → [orbit-crm](https://github.com/nwl01234/orbit-crm) → **pulse-crm** · [business-flow-automator](https://github.com/nwl01234/business-flow-automator)
