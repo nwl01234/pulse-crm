@@ -2,6 +2,12 @@
 
 Внутренняя CRM для сервисной компании: заявки, исполнители, статусы, задачи, dashboard, аудит-лог и AI-модуль (авто-резюме заявки, RAG-контекст из истории, Telegram-приём заявок).
 
+**Problem.** Заявки и клиенты живут в таблицах и мессенджерах: нет единой воронки, не видно, кто менял статус, доступы не разделены.
+
+**Solution.** React 18 + TypeScript SPA, async FastAPI + SQLAlchemy 2.0, JWT-роли, Alembic, Telegram-интеграция, audit log.
+
+**Result.** Запускается по README, demo-данные создаются при первом старте, `admin / admin123`.
+
 ## Стек
 - **Backend:** Python 3.11, FastAPI (async), SQLAlchemy 2.0 async, Alembic, JWT (access+refresh), bcrypt
 - **Frontend:** React 18 + TypeScript + Vite + TailwindCSS
